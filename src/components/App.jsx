@@ -15,6 +15,8 @@ export class App extends Component {
     totalPages: null,
     loading: false,
   };
+
+  //якщо ставлю  async componentDidMount - то відразу рендеряться картинки
   async componentDidUpdate(_, prevState) {
     const { query, page } = this.state;
     const res = await fetchImagesWithQuery(query, page);
