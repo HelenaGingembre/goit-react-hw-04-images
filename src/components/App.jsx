@@ -9,7 +9,7 @@ export class App extends Component {
   state = {
     images: [],
     // query: null,
-    query: 'cat', //test
+    query: 'art', //test
     page: 1,
     totalPages: null,
     loading: false,

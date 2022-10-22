@@ -11,7 +11,7 @@ import './styles.css';
 //     blue_ciel: 'rgb(230, 243, 250)',
 //     white: 'white',
 //     gray: 'rgb(204, 204, 204)',
-//     accent: '#4298f9',
+//     accent: '#3f51b5',
 //     hover: 'linear-gradient(rgb(93, 196, 255), rgb(255, 250, 102))',
 //   },
 // };
