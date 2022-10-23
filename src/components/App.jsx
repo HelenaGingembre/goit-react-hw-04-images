@@ -4,9 +4,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Searchbar } from './Searchbar/Searchbar';
 import { Loader } from './Loader/Loader';
+import { Button } from './Button/Button';
 
 import 'react-toastify/dist/ReactToastify.css';
-import { Button } from './Searchbar/Searchbar.styled';
+// import { Button } from './Searchbar/Searchbar.styled';
 
 export class App extends Component {
   state = {
