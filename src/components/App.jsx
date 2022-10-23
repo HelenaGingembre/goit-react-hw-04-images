@@ -16,6 +16,7 @@ export class App extends Component {
     page: 1,
     totalPages: null,
     loading: false,
+    error: null,
   };
 
   //якщо ставлю  async componentDidMount - то відразу рендеряться картинки
@@ -24,17 +25,24 @@ export class App extends Component {
 
     if (prevState.page !== page && page !== 1) {
       this.setState({ loading: true });
-
       const result = await fetchImagesWithQuery(query, page);
-
-      this.setState(({ images }) => ({
-        images: [...images, ...result.hits],
-        loading: false,
-      }));
-
-      if (page >= totalPages && images !== prevState.images) {
-        toast.error("Sorry, but you've reached the end of search results.");
+      try {
+        this.setState(({ images }) => ({
+          images: [...images, ...result.hits],
+          loading: false,
+        }));
+      } catch (error) {
+        this.setState({ error: error.message });
+        toast.error('Sorry, something went wrong, the server is down.');
+      } finally {
+        this.setState(({ images }) => ({
+          images: [...images, ...result.hits],
+          loading: false,
+        }));
       }
+    }
+    if (page >= totalPages && images !== prevState.images) {
+      toast.error("Sorry, but you've reached the end of search results.");
     }
   }
   onSubmit = async event => {
@@ -53,7 +61,7 @@ export class App extends Component {
 
     if (result.hits.length === 0) {
       toast.error(
-        'Sorry, there are no images matching your search query. Please try again.'
+        "Sorry, we can't find anyting for your request. Please try again."
       );
       return;
     }

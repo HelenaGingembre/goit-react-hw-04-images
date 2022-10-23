@@ -42,6 +42,7 @@ export const Button = styled.button`
   outline: none;
   :hover {
     opacity: 1;
+    fill: ${p => p.theme.colors.accent};
   }
 `;
 

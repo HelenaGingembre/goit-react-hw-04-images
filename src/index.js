@@ -8,7 +8,7 @@ import './styles.css';
 const theme = {
   colors: {
     black: 'black',
-    blue_ciel: '#5ac8fa',
+    blue_ciel: '#303f9f',
     white: 'white',
     gray: 'rgb(204, 204, 204)',
     accent: '#3f51b5',
