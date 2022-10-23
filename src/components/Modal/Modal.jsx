@@ -36,14 +36,6 @@ export class Modal extends Component {
   render() {
     const { image, tags } = this.props;
 
-    //     const instance = basicLightbox.create(`
-    //            <p>
-    //             Your first lightbox with just a few lines of code.
-    //             Yes, it's really that simple.
-    //         </p>
-
-    // `);
-
     return createPortal(
       <Overlay onClick={this.clickOnBackdrop}>
         <ModalContainer>

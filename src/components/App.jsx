@@ -34,12 +34,13 @@ export class App extends Component {
       } catch (error) {
         this.setState({ error: error.message });
         toast.error('Sorry, something went wrong, the server is down.');
-      } finally {
-        this.setState(({ images }) => ({
-          images: [...images, ...result.hits],
-          loading: false,
-        }));
       }
+      //finally {
+      //   this.setState(({ images }) => ({
+      //     images: [...images, ...result.hits],
+      //     loading: false,
+      //   }));
+      // }
     }
     if (page >= totalPages && images !== prevState.images) {
       toast.error("Sorry, but you've reached the end of search results.");
@@ -56,8 +57,9 @@ export class App extends Component {
       toast.error("You didn't enter anything!");
       return;
     }
-
+    this.setState({ loading: true });
     const result = await fetchImagesWithQuery(value, page);
+    this.setState({ loading: false });
 
     if (result.hits.length === 0) {
       toast.error(
