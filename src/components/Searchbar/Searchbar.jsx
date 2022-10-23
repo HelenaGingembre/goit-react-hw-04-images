@@ -7,7 +7,7 @@ export const Searchbar = ({ onSubmit }) => {
     <Header>
       <Form onSubmit={onSubmit}>
         <Button type="submit">
-          <AiOutlineSearch size="26px" />
+          <AiOutlineSearch size="25px" />
           <ButtonLabel></ButtonLabel>
         </Button>
 
