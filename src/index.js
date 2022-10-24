@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { App } from 'components/App';
+import { App } from 'App';
 import { ThemeProvider } from 'styled-components';
 import './index.css';
-// import './styles.css';
 
 const theme = {
   colors: {
