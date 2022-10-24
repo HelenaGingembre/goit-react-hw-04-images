@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { GalleryItem, GalleryImage } from './ImageGalleryItem.styled';
 import { Modal } from '../Modal/Modal';
+import { Image } from 'components/Modal/Modal.styled';
 
 export class ImageGalleryItem extends Component {
   state = {
@@ -23,7 +24,9 @@ export class ImageGalleryItem extends Component {
           <GalleryImage src={webformatURL} alt={tags} />
         </GalleryItem>
         {showModal && (
-          <Modal toggle={this.toggleModal} image={largeImageURL} tags={tags} />
+          <Modal toggle={this.toggleModal} image={largeImageURL} tags={tags}>
+            <Image src={largeImageURL} alt={tags} />
+          </Modal>
         )}
       </>
     );

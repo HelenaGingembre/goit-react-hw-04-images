@@ -1,4 +1,4 @@
-import { Image, ModalContainer, Overlay } from './Modal.styled';
+import { ModalContainer, Overlay } from './Modal.styled';
 import { createPortal } from 'react-dom';
 import { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -17,8 +17,8 @@ export class Modal extends Component {
   };
 
   clickOnBackdrop = event => {
-    console.log('event.currentTarget', event.currentTarget);
-    console.log('event.target', event.target);
+    // console.log('event.currentTarget', event.currentTarget);
+    // console.log('event.target', event.target);
 
     if (event.target === event.currentTarget) {
       this.props.toggle();
@@ -34,12 +34,13 @@ export class Modal extends Component {
   }
 
   render() {
-    const { image, tags } = this.props;
+    // const { image, tags } = this.props;
 
     return createPortal(
       <Overlay onClick={this.clickOnBackdrop}>
         <ModalContainer>
-          <Image src={image} alt={tags} />
+          {/* <Image src={image} alt={tags} /> */}
+          {this.props.children}
         </ModalContainer>
       </Overlay>,
       modalRoot

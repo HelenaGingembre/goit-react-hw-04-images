@@ -32,15 +32,12 @@ export class App extends Component {
           loading: false,
         }));
       } catch (error) {
-        this.setState({ error: error.message });
-        toast.error('Sorry, something went wrong, the server is down.');
+        this.setState({
+          error: toast.error(
+            'Sorry, something went wrong, the server is down.'
+          ),
+        });
       }
-      //finally {
-      //   this.setState(({ images }) => ({
-      //     images: [...images, ...result.hits],
-      //     loading: false,
-      //   }));
-      // }
     }
     if (page >= totalPages && images !== prevState.images) {
       toast.error("Sorry, but you've reached the end of search results.");
