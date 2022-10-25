@@ -17,17 +17,8 @@ export async function fetchImagesWithQuery(query, page) {
 
   try {
     const response = await axios.get(API_URL, { params: BASE_PARAMS });
-    const images = response.data.hits.map(img => {
-      const { id, largeImageURL, webformatURL, tags } = img;
-      return {
-        id,
-        largeImageURL,
-        webformatURL,
-        tags,
-      };
-    });
-    console.log('response.data.totalHits', response.data.totalHits);
-    return images;
+    // console.log('response.data.totalHits', response.data.totalHits);
+    return response.data;
   } catch (error) {
     throw new Error(error);
   }

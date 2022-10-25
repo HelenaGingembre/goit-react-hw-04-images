@@ -16,13 +16,40 @@ export class App extends Component {
     // totalPages: null,
     loading: false,
     error: null,
+    showLoadMore: true,
   };
+
+  controlLastPage = ({ totalPage, page }) => {
+    const isLastPage = page >= totalPage;
+    if (page === 1 && !isLastPage) {
+      this.setState({ showLoadMore: true });
+    } else if (isLastPage) {
+      this.setState({ showLoadMore: false });
+      toast.error('This is last page.');
+    }
+  };
+
   async uploadImages(query, page) {
     try {
       this.setState({ loading: true });
-      const result = await fetchImagesWithQuery(query, page);
-      console.log('result', result);
+      const dateFromApi = await fetchImagesWithQuery(query, page);
+      const totalPage = Math.ceil(dateFromApi.totalHits / 12);
+
+      console.log('totalPage:', totalPage);
       console.log('page', page);
+
+      this.controlLastPage({ totalPage, page });
+
+      const result = dateFromApi.hits.map(img => {
+        const { id, largeImageURL, webformatURL, tags } = img;
+        return {
+          id,
+          largeImageURL,
+          webformatURL,
+          tags,
+        };
+      });
+      // console.log('result', result);
 
       this.setState(({ images }) => ({
         images: [...images, ...result],
@@ -76,10 +103,10 @@ export class App extends Component {
   };
 
   render() {
-    const { images, loading } = this.state;
-    // console.log('this.state ', this.state);
+    const { images, loading, showLoadMore } = this.state;
+    // console.log('this.state.showLoadMore ', this.state.showLoadMore);
     const notEmpty = images.length !== 0;
-    const notEndList = images.length >= 12;
+    const notEndList = showLoadMore === true;
 
     return (
       <>
