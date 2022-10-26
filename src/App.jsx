@@ -79,11 +79,9 @@ export class App extends Component {
     }
   }
 
-  onSubmit = async event => {
-    event.preventDefault();
-    const input = event.target.elements.search;
-    //  console.log('event', event.target.elements.search);
-    const value = input.value.trim();
+  onFormSubmit = data => {
+    console.log('data', data);
+    const value = data;
     if (value === '') {
       toast.error("You didn't enter anything!");
       return;
@@ -110,7 +108,7 @@ export class App extends Component {
 
     return (
       <>
-        <Searchbar onSubmit={this.onSubmit} />
+        <Searchbar onSubmit={this.onFormSubmit} />
         <ToastContainer autoClose={2000} />
         {notEmpty && <ImageGallery images={images} />}
         {loading ? (
