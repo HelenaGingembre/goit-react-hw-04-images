@@ -13,7 +13,6 @@ export class App extends Component {
     images: [],
     query: null,
     page: 1,
-    // totalPages: null,
     loading: false,
     error: null,
     showLoadMore: true,
@@ -49,7 +48,6 @@ export class App extends Component {
           tags,
         };
       });
-      // console.log('result', result);
 
       this.setState(({ images }) => ({
         images: [...images, ...result],
@@ -102,7 +100,6 @@ export class App extends Component {
 
   render() {
     const { images, loading, showLoadMore } = this.state;
-    // console.log('this.state.showLoadMore ', this.state.showLoadMore);
     const notEmpty = images.length !== 0;
     const notEndList = showLoadMore === true;
 
