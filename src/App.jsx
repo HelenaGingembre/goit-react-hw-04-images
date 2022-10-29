@@ -61,7 +61,10 @@ export const App = () => {
         setLoading(() => false);
       } catch (error) {
         setError(
-          toast.error('Sorry, something went wrong, the server is down.')
+          error =>
+            (error = toast.error(
+              'Sorry, something went wrong, the server is down.'
+            ))
         );
       } finally {
         setLoading(() => false);
@@ -70,18 +73,11 @@ export const App = () => {
     uploadImages(query, page);
   }, [query, page]);
 
-  // componentDidUpdate(_, prevState) {
-  //   const { query, page } = this.state;
-  //   if (prevState.page !== page || prevState.query !== query) {
-
-  //   }
-  // }
-
   const onFormSubmit = data => {
     console.log('data', data);
 
     if (data === '') {
-      toast.error("You didn't enter anything!");
+      toast.error("You didn't enter anything! Please try again.");
       return;
     }
     setImages(() => []);
@@ -93,21 +89,16 @@ export const App = () => {
     setPage(page => page + 1);
   };
 
-  // render() {
-  // const { images, loading, showLoadMore } = this.state;
-  // const notEmpty = images.length !== 0;
-  // const notEndList = images.length !== 0;
-
   return (
     <>
       <Searchbar onSubmit={onFormSubmit} />
       <ToastContainer autoClose={2000} />
       {images.length !== 0 && <ImageGallery images={images} />}
-      {loading ? (
+      {loading === true ? (
         <Loader />
       ) : (
         images.length !== 0 &&
-        images.length !== 0 && <Button onClick={loadMore} />
+        showLoadMore === true && <Button onClick={loadMore} />
       )}
     </>
   );
