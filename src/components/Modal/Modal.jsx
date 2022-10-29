@@ -16,7 +16,7 @@ export const Modal = ({ toggle, children }) => {
   }, [toggle]);
 
   const clickOnBackdrop = event => {
-    console.log('event', event);
+    // console.log('event', event);
     if (event.target === event.currentTarget) {
       toggle();
     }
@@ -33,6 +33,4 @@ export const Modal = ({ toggle, children }) => {
 Modal.propTypes = {
   toggle: PropTypes.func.isRequired,
   children: PropTypes.element,
-  // image: PropTypes.string,
-  // tags: PropTypes.string,
 };

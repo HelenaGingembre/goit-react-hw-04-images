@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { fetchImagesWithQuery } from './services/APIservice';
 import { ToastContainer, toast } from 'react-toastify';
 import { ImageGallery } from './components/ImageGallery/ImageGallery';
@@ -8,112 +8,107 @@ import { Button } from './components/Button/Button';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-export class App extends Component {
-  state = {
-    images: [],
-    query: null,
-    page: 1,
-    loading: false,
-    error: null,
-    showLoadMore: true,
-  };
+export const App = () => {
+  const [images, setImages] = useState([]);
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [showLoadMore, setShowLoadMore] = useState(true);
 
-  controlLastPage = ({ totalPage, page }) => {
+  const controlLastPage = ({ totalPage, page }) => {
     const isLastPage = page >= totalPage;
     if (page === 1 && !isLastPage) {
-      this.setState({ showLoadMore: true });
+      setShowLoadMore(() => true);
     } else if (isLastPage) {
-      this.setState({ showLoadMore: false });
+      setShowLoadMore(() => false);
       toast.error('This is last page.');
     }
   };
 
-  async uploadImages(query, page) {
-    try {
-      this.setState({ loading: true });
-      const dateFromApi = await fetchImagesWithQuery(query, page);
-      const totalPage = Math.ceil(dateFromApi.totalHits / 12);
+  useEffect(() => {
+    if (query === '') return;
 
-      console.log('totalPage:', totalPage);
-      console.log('page', page);
+    const uploadImages = async (query, page) => {
+      try {
+        setLoading(() => true);
+        const dateFromApi = await fetchImagesWithQuery(query, page);
+        const totalPage = Math.ceil(dateFromApi.totalHits / 12);
 
-      this.controlLastPage({ totalPage, page });
+        console.log('totalPage:', totalPage);
+        console.log('page', page);
 
-      const result = dateFromApi.hits.map(img => {
-        const { id, largeImageURL, webformatURL, tags } = img;
-        return {
-          id,
-          largeImageURL,
-          webformatURL,
-          tags,
-        };
-      });
+        controlLastPage({ totalPage, page });
 
-      this.setState(({ images }) => ({
-        images: [...images, ...result],
-        loading: false,
-      }));
-      if (result.length === 0) {
-        toast.error(
-          "Sorry, we can't find anyting for your request. Please try again."
+        const result = dateFromApi.hits.map(img => {
+          const { id, largeImageURL, webformatURL, tags } = img;
+          return {
+            id,
+            largeImageURL,
+            webformatURL,
+            tags,
+          };
+        });
+
+        if (result.length === 0) {
+          toast.error(
+            "Sorry, we can't find anyting for your request. Please try again."
+          );
+          return;
+        } else {
+          setImages(images => [...images, ...result]);
+        }
+        setLoading(() => false);
+      } catch (error) {
+        setError(
+          toast.error('Sorry, something went wrong, the server is down.')
         );
-        return;
+      } finally {
+        setLoading(() => false);
       }
-    } catch (error) {
-      this.setState({
-        error: toast.error('Sorry, something went wrong, the server is down.'),
-      });
-    } finally {
-      this.setState({
-        loading: false,
-      });
-    }
-  }
+    };
+    uploadImages(query, page);
+  }, [query, page]);
 
-  componentDidUpdate(_, prevState) {
-    const { query, page } = this.state;
-    if (prevState.page !== page || prevState.query !== query) {
-      this.uploadImages(query, page);
-    }
-  }
+  // componentDidUpdate(_, prevState) {
+  //   const { query, page } = this.state;
+  //   if (prevState.page !== page || prevState.query !== query) {
 
-  onFormSubmit = data => {
+  //   }
+  // }
+
+  const onFormSubmit = data => {
     console.log('data', data);
-    const value = data;
-    if (value === '') {
+
+    if (data === '') {
       toast.error("You didn't enter anything!");
       return;
     }
-
-    this.setState({
-      images: [],
-      query: value,
-      page: 1,
-    });
+    setImages(() => []);
+    setQuery(() => data);
+    setPage(() => 1);
   };
 
-  loadMore = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
+  const loadMore = () => {
+    setPage(page => page + 1);
   };
 
-  render() {
-    const { images, loading, showLoadMore } = this.state;
-    const notEmpty = images.length !== 0;
-    const notEndList = showLoadMore === true;
+  // render() {
+  // const { images, loading, showLoadMore } = this.state;
+  // const notEmpty = images.length !== 0;
+  // const notEndList = images.length !== 0;
 
-    return (
-      <>
-        <Searchbar onSubmit={this.onFormSubmit} />
-        <ToastContainer autoClose={2000} />
-        {notEmpty && <ImageGallery images={images} />}
-        {loading ? (
-          <Loader />
-        ) : (
-          notEmpty && notEndList && <Button onClick={this.loadMore} />
-        )}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Searchbar onSubmit={onFormSubmit} />
+      <ToastContainer autoClose={2000} />
+      {images.length !== 0 && <ImageGallery images={images} />}
+      {loading ? (
+        <Loader />
+      ) : (
+        images.length !== 0 &&
+        images.length !== 0 && <Button onClick={loadMore} />
+      )}
+    </>
+  );
+};
